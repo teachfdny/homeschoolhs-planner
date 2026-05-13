@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeschoolHS Planner - 4-Year Course Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 HomeschoolHS Planner</h1>
+            <p>Plan your 4-year high school program and generate transcripts</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="planner">📋 Planner</button>
+            <button class="tab-btn" data-tab="transcript">📄 Transcript</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+        </nav>
+
+        <!-- PLANNER TAB -->
+        <section id="planner" class="tab-content active">
+            <div class="student-section">
+                <h2>Student Information</h2>
+                <div class="form-group">
+                    <label for="studentName">Student Name:</label>
+                    <input type="text" id="studentName" placeholder="Enter student name" value="Student">
+                </div>
+                <div class="form-group">
+                    <label for="schoolName">School Name:</label>
+                    <input type="text" id="schoolName" placeholder="Enter school name" value="HomeschoolHS">
+                </div>
+                <div class="form-group">
+                    <label for="graduationYear">Expected Graduation Year:</label>
+                    <input type="number" id="graduationYear" placeholder="2026" value="2026">
+                </div>
+            </div>
+
+            <!-- YEARS GRID -->
+            <div class="years-grid">
+                <div class="year-card" data-year="9">
+                    <h3>Freshman (Year 1)</h3>
+                    <div class="courses-list" id="year-9"></div>
+                    <button class="btn btn-add" onclick="addCourse(9)">+ Add Course</button>
+                </div>
+
+                <div class="year-card" data-year="10">
+                    <h3>Sophomore (Year 2)</h3>
+                    <div class="courses-list" id="year-10"></div>
+                    <button class="btn btn-add" onclick="addCourse(10)">+ Add Course</button>
+                </div>
+
+                <div class="year-card" data-year="11">
+                    <h3>Junior (Year 3)</h3>
+                    <div class="courses-list" id="year-11"></div>
+                    <button class="btn btn-add" onclick="addCourse(11)">+ Add Course</button>
+                </div>
+
+                <div class="year-card" data-year="12">
+                    <h3>Senior (Year 4)</h3>
+                    <div class="courses-list" id="year-12"></div>
+                    <button class="btn btn-add" onclick="addCourse(12)">+ Add Course</button>
+                </div>
+            </div>
+
+            <!-- SUMMARY STATS -->
+            <div class="summary-section">
+                <div class="stat-card">
+                    <h4>Total Credits</h4>
+                    <p class="stat-value" id="totalCredits">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Overall GPA</h4>
+                    <p class="stat-value" id="overallGPA">0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Total Courses</h4>
+                    <p class="stat-value" id="totalCourses">0</p>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="savePlan()">💾 Save Plan</button>
+                <button class="btn btn-secondary" onclick="exportPlan()">📥 Export as JSON</button>
+                <button class="btn btn-secondary" onclick="importPlan()">📤 Import from JSON</button>
+                <button class="btn btn-danger" onclick="clearPlan()">🗑️ Clear All</button>
+            </div>
+        </section>
+
+        <!-- TRANSCRIPT TAB -->
+        <section id="transcript" class="tab-content">
+            <div class="transcript-container">
+                <button class="btn btn-secondary" onclick="generateTranscript()">Generate Transcript</button>
+                <button class="btn btn-secondary" onclick="printTranscript()">🖨️ Print</button>
+                <div id="transcriptOutput"></div>
+            </div>
+        </section>
+
+        <!-- SETTINGS TAB -->
+        <section id="settings" class="tab-content">
+            <h2>Settings</h2>
+            <div class="settings-group">
+                <h3>Grading Scale</h3>
+                <p>Currently using standard 4.0 GPA scale</p>
+                <table class="grading-table">
+                    <tr>
+                        <th>Grade</th>
+                        <th>GPA Points</th>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td>4.0</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>3.0</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>1.0</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td>0.0</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="settings-group">
+                <h3>About</h3>
+                <p>HomeschoolHS Planner v1.0</p>
+                <p>A free, open-source tool for planning high school programs.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL FOR ADDING COURSE -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add Course</h2>
+            <form id="courseForm">
+                <div class="form-group">
+                    <label for="courseName">Course Name:</label>
+                    <input type="text" id="courseName" placeholder="e.g., Biology, Algebra 2" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseCredits">Credits:</label>
+                    <input type="number" id="courseCredits" min="0.5" max="4" step="0.5" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseGrade">Grade:</label>
+                    <select id="courseGrade" required>
+                        <option value="">Select a grade</option>
+                        <option value="A">A (4.0)</option>
+                        <option value="B">B (3.0)</option>
+                        <option value="C">C (2.0)</option>
+                        <option value="D">D (1.0)</option>
+                        <option value="F">F (0.0)</option>
+                        <option value="P">P - Pass (no GPA)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="courseType">Course Type:</label>
+                    <select id="courseType" required>
+                        <option value="Regular">Regular</option>
+                        <option value="Honors">Honors</option>
+                        <option value="AP">AP</option>
+                        <option value="IB">IB</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- HIDDEN FILE INPUT FOR IMPORT -->
+    <input type="file" id="fileInput" style="display: none;" accept=".json">
+
+    <script src="js/config.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/transcript.js"></script>
+</body>
+</html>
