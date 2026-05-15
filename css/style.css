@@ -6,28 +6,28 @@
 
 body {
     font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
-    background: linear-gradient(135deg, #F5F3F0 0%, #E8E4DF 100%);
+    background: linear-gradient(135deg, #F2F6D0 0%, #F0BCD4 100%);
     min-height: 100vh;
     padding: 20px;
-    color: #4A4A4A;
+    color: #032E4E;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: #F5F3F0;
+    background: #F0BCD4;
     border-radius: 15px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     overflow: hidden;
-    border: 1px solid #D4A5A5;
+    border: 2px solid #D44167;
 }
 
 header {
-    background: linear-gradient(135deg, #6B5B95 0%, #7A6FA3 100%);
-    color: #F5F3F0;
+    background: linear-gradient(135deg, #032E4E 0%, #1B5A7E 100%);
+    color: #F2F6D0;
     padding: 50px 20px;
     text-align: center;
-    border-bottom: 3px solid #D4A5A5;
+    border-bottom: 3px solid #D44167;
     position: relative;
     overflow: hidden;
 }
@@ -72,8 +72,8 @@ header p {
 /* TABS */
 .tabs {
     display: flex;
-    background: #E8E4DF;
-    border-bottom: 2px solid #C4B5A0;
+    background: #F2F6D0;
+    border-bottom: 2px solid #D44167;
     gap: 0;
 }
 
@@ -85,7 +85,7 @@ header p {
     cursor: pointer;
     font-size: 0.95em;
     font-weight: 600;
-    color: #6B5B95;
+    color: #032E4E;
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
     position: relative;
@@ -95,14 +95,14 @@ header p {
 }
 
 .tab-btn:hover {
-    background: #DDD6CF;
-    color: #7A9B9E;
+    background: #E8E4DF;
+    color: #D44167;
 }
 
 .tab-btn.active {
-    color: #F5F3F0;
-    background: #6B5B95;
-    border-bottom-color: #D4A5A5;
+    color: #F2F6D0;
+    background: #032E4E;
+    border-bottom-color: #D44167;
 }
 
 .tab-content {
@@ -128,17 +128,17 @@ header p {
 
 /* STUDENT SECTION */
 .student-section {
-    background: #E8E4DF;
+    background: #F0BCD4;
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 30px;
-    border: 1px solid #D4A5A5;
+    border: 2px solid #D44167;
     box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5), 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
 .student-section h2 {
     margin-bottom: 20px;
-    color: #6B5B95;
+    color: #032E4E;
     font-size: 1.3em;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -159,7 +159,7 @@ header p {
     display: block;
     margin-bottom: 6px;
     font-weight: 600;
-    color: #6B5B95;
+    color: #545677;
     font-size: 0.9em;
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -169,11 +169,11 @@ header p {
 .form-group select {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #C4B5A0;
+    border: 1px solid #D44167;
     border-radius: 8px;
     font-size: 0.95em;
-    background: #F5F3F0;
-    color: #4A4A4A;
+    background: #F2F6D0;
+    color: #032E4E;
     font-family: 'Segoe UI', sans-serif;
     transition: all 0.3s ease;
 }
@@ -181,9 +181,9 @@ header p {
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #6B5B95;
-    box-shadow: 0 0 0 3px rgba(107, 91, 149, 0.1);
-    background: #F5F3F0;
+    border-color: #032E4E;
+    box-shadow: 0 0 0 3px rgba(3, 46, 78, 0.1);
+    background: #F2F6D0;
 }
 
 /* YEARS GRID */
@@ -195,8 +195,8 @@ header p {
 }
 
 .year-card {
-    background: #E8E4DF;
-    border: 2px solid #D4A5A5;
+    background: #F0BCD4;
+    border: 2px solid #D44167;
     border-radius: 12px;
     padding: 22px;
     transition: all 0.3s ease;
@@ -204,13 +204,13 @@ header p {
 }
 
 .year-card:hover {
-    border-color: #7A9B9E;
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 5px 12px rgba(122, 155, 158, 0.15);
+    border-color: #D44167;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 5px 12px rgba(212, 65, 103, 0.15);
     transform: translateY(-2px);
 }
 
 .year-card h3 {
-    color: #6B5B95;
+    color: #032E4E;
     margin-bottom: 15px;
     font-size: 1.1em;
     font-weight: 700;
@@ -223,11 +223,11 @@ header p {
 }
 
 .course-item {
-    background: #F5F3F0;
+    background: #F2F6D0;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 8px;
-    border-left: 4px solid #7A9B9E;
+    border-left: 4px solid #D44167;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -246,19 +246,19 @@ header p {
 
 .course-name {
     font-weight: 600;
-    color: #4A4A4A;
+    color: #032E4E;
     font-size: 0.95em;
 }
 
 .course-details {
     font-size: 0.8em;
-    color: #8B8B7A;
+    color: #545677;
     margin-top: 3px;
 }
 
 .course-grade {
-    background: #9B8BA3;
-    color: #F5F3F0;
+    background: #032E4E;
+    color: #F2F6D0;
     padding: 4px 10px;
     border-radius: 6px;
     font-weight: bold;
@@ -267,8 +267,8 @@ header p {
 }
 
 .course-delete {
-    background: #B89B8B;
-    color: #F5F3F0;
+    background: #D44167;
+    color: #F2F6D0;
     border: none;
     padding: 5px 10px;
     border-radius: 6px;
@@ -279,7 +279,7 @@ header p {
 }
 
 .course-delete:hover {
-    background: #A28B7B;
+    background: #C03050;
 }
 
 /* BUTTONS */
@@ -299,49 +299,49 @@ header p {
 
 .btn-add {
     width: 100%;
-    background: #A8B89A;
-    color: #F5F3F0;
+    background: #545677;
+    color: #F2F6D0;
     margin-top: 10px;
-    border: 1px solid #9BA88C;
+    border: 1px solid #3D3D50;
 }
 
 .btn-add:hover {
-    background: #98A88A;
-    box-shadow: 0 4px 10px rgba(168, 184, 154, 0.3);
+    background: #3D3D50;
+    box-shadow: 0 4px 10px rgba(84, 86, 119, 0.3);
 }
 
 .btn-primary {
-    background: #6B5B95;
-    color: #F5F3F0;
-    border: 1px solid #5A4A84;
+    background: #032E4E;
+    color: #F2F6D0;
+    border: 1px solid #021F32;
 }
 
 .btn-primary:hover {
-    background: #7A6FA3;
-    box-shadow: 0 4px 10px rgba(107, 91, 149, 0.3);
+    background: #1B5A7E;
+    box-shadow: 0 4px 10px rgba(3, 46, 78, 0.3);
 }
 
 .btn-secondary {
-    background: #7A9B9E;
-    color: #F5F3F0;
+    background: #D44167;
+    color: #F2F6D0;
     margin-right: 10px;
-    border: 1px solid #6A8B8E;
+    border: 1px solid #C03050;
 }
 
 .btn-secondary:hover {
-    background: #6A8B8E;
-    box-shadow: 0 4px 10px rgba(122, 155, 158, 0.3);
+    background: #C03050;
+    box-shadow: 0 4px 10px rgba(212, 65, 103, 0.3);
 }
 
 .btn-danger {
-    background: #B89B8B;
-    color: #F5F3F0;
-    border: 1px solid #A88B7B;
+    background: #545677;
+    color: #F2F6D0;
+    border: 1px solid #3D3D50;
 }
 
 .btn-danger:hover {
-    background: #A88B7B;
-    box-shadow: 0 4px 10px rgba(184, 155, 139, 0.3);
+    background: #3D3D50;
+    box-shadow: 0 4px 10px rgba(84, 86, 119, 0.3);
 }
 
 /* SUMMARY STATS */
@@ -353,12 +353,12 @@ header p {
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #6B5B95 0%, #7A9B9E 100%);
-    color: #F5F3F0;
+    background: linear-gradient(135deg, #032E4E 0%, #1B5A7E 100%);
+    color: #F2F6D0;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
-    border: 1px solid #D4A5A5;
+    border: 2px solid #D44167;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
@@ -383,7 +383,7 @@ header p {
     flex-wrap: wrap;
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 2px solid #D4A5A5;
+    border-top: 2px solid #D44167;
 }
 
 /* MODAL */
@@ -395,7 +395,7 @@ header p {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(75, 74, 74, 0.6);
+    background-color: rgba(3, 46, 78, 0.6);
     animation: modalFadeIn 0.3s ease;
 }
 
@@ -415,17 +415,17 @@ header p {
 }
 
 .modal-content {
-    background: #F5F3F0;
+    background: #F0BCD4;
     padding: 35px;
     border-radius: 12px;
     max-width: 500px;
     width: 90%;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-    border: 2px solid #D4A5A5;
+    border: 2px solid #D44167;
 }
 
 .close {
-    color: #8B8B7A;
+    color: #545677;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -434,12 +434,12 @@ header p {
 }
 
 .close:hover {
-    color: #6B5B95;
+    color: #032E4E;
 }
 
 .modal-content h2 {
     margin-bottom: 20px;
-    color: #6B5B95;
+    color: #032E4E;
     font-weight: 700;
     letter-spacing: 0.3px;
 }
@@ -461,8 +461,8 @@ header p {
 
 #transcriptOutput {
     margin-top: 20px;
-    background: #F5F3F0;
-    border: 2px solid #D4A5A5;
+    background: #F2F6D0;
+    border: 2px solid #D44167;
     border-radius: 12px;
     padding: 30px;
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
@@ -471,12 +471,12 @@ header p {
 .transcript {
     font-family: 'Segoe UI', sans-serif;
     line-height: 1.7;
-    color: #4A4A4A;
+    color: #032E4E;
 }
 
 .transcript-header {
     text-align: center;
-    border-bottom: 3px solid #6B5B95;
+    border-bottom: 3px solid #032E4E;
     padding-bottom: 20px;
     margin-bottom: 30px;
 }
@@ -484,13 +484,13 @@ header p {
 .transcript-header h1 {
     font-size: 1.8em;
     margin-bottom: 10px;
-    color: #6B5B95;
+    color: #032E4E;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 
 .transcript-header p {
-    color: #8B8B7A;
+    color: #545677;
     margin: 5px 0;
     font-size: 0.95em;
     font-weight: 600;
@@ -514,10 +514,10 @@ header p {
 }
 
 .transcript-section h3 {
-    border-bottom: 2px solid #D4A5A5;
+    border-bottom: 2px solid #D44167;
     padding-bottom: 8px;
     margin-bottom: 15px;
-    color: #6B5B95;
+    color: #032E4E;
     font-size: 1.1em;
     font-weight: 700;
     letter-spacing: 0.3px;
@@ -531,16 +531,16 @@ header p {
 }
 
 .transcript-table thead {
-    background-color: #E8E4DF;
-    border-top: 2px solid #6B5B95;
-    border-bottom: 2px solid #6B5B95;
+    background-color: #F0BCD4;
+    border-top: 2px solid #032E4E;
+    border-bottom: 2px solid #032E4E;
 }
 
 .transcript-table th {
     padding: 10px 8px;
     text-align: left;
     font-weight: 700;
-    color: #6B5B95;
+    color: #032E4E;
     text-transform: uppercase;
     font-size: 0.85em;
     letter-spacing: 0.3px;
@@ -548,11 +548,11 @@ header p {
 
 .transcript-table td {
     padding: 8px;
-    border-bottom: 1px solid #D4A5A5;
+    border-bottom: 1px solid #D44167;
 }
 
 .transcript-table tbody tr:nth-child(even) {
-    background-color: #F5F3F0;
+    background-color: #F2F6D0;
 }
 
 .col-name {
@@ -582,9 +582,9 @@ header p {
 .year-summary {
     display: flex;
     justify-content: space-around;
-    background: #E8E4DF;
+    background: #F0BCD4;
     padding: 12px;
-    border: 1px solid #D4A5A5;
+    border: 2px solid #D44167;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.9em;
@@ -598,7 +598,7 @@ header p {
     display: block;
     font-weight: 700;
     font-size: 0.8em;
-    color: #6B5B95;
+    color: #032E4E;
     text-transform: uppercase;
     letter-spacing: 0.2px;
 }
@@ -607,7 +607,7 @@ header p {
     display: block;
     font-size: 1.2em;
     font-weight: 700;
-    color: #4A4A4A;
+    color: #545677;
     margin-top: 5px;
 }
 
@@ -620,8 +620,8 @@ header p {
 .summary-box {
     text-align: center;
     padding: 15px;
-    background: #E8E4DF;
-    border: 2px solid #D4A5A5;
+    background: #F0BCD4;
+    border: 2px solid #D44167;
     border-radius: 8px;
     flex: 1;
     margin: 0 10px;
@@ -629,21 +629,21 @@ header p {
 
 .summary-box .summary-label {
     font-size: 0.8em;
-    color: #6B5B95;
+    color: #032E4E;
     margin-bottom: 8px;
 }
 
 .summary-large {
     font-size: 1.6em;
     font-weight: 700;
-    color: #6B5B95;
+    color: #032E4E;
 }
 
 .grading-scale-section {
     margin-top: 30px;
     padding: 15px;
-    background: #E8E4DF;
-    border: 2px solid #D4A5A5;
+    background: #F0BCD4;
+    border: 2px solid #D44167;
     border-radius: 8px;
     page-break-inside: avoid;
 }
@@ -651,7 +651,7 @@ header p {
 .grading-scale-section h4 {
     font-size: 0.95em;
     margin-bottom: 10px;
-    color: #6B5B95;
+    color: #032E4E;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -664,7 +664,7 @@ header p {
 
 .grading-scale-table td {
     padding: 5px 10px;
-    border-right: 1px solid #D4A5A5;
+    border-right: 1px solid #D44167;
 }
 
 .grading-scale-table td:last-child {
@@ -674,24 +674,24 @@ header p {
 .transcript-footer {
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 2px solid #D4A5A5;
+    border-top: 2px solid #D44167;
     text-align: center;
     font-size: 0.85em;
-    color: #8B8B7A;
+    color: #545677;
 }
 
 /* SETTINGS */
 .settings-group {
     margin-bottom: 30px;
     padding: 20px;
-    background: #E8E4DF;
+    background: #F0BCD4;
     border-radius: 12px;
-    border: 1px solid #D4A5A5;
+    border: 2px solid #D44167;
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .settings-group h3 {
-    color: #6B5B95;
+    color: #032E4E;
     margin-bottom: 15px;
     font-weight: 700;
     letter-spacing: 0.3px;
@@ -707,17 +707,17 @@ header p {
 .grading-table td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #D4A5A5;
+    border-bottom: 1px solid #D44167;
 }
 
 .grading-table th {
-    background: #6B5B95;
-    color: #F5F3F0;
+    background: #032E4E;
+    color: #F2F6D0;
     font-weight: 700;
 }
 
 .grading-table tr:nth-child(even) {
-    background: #F5F3F0;
+    background: #F2F6D0;
 }
 
 /* RESPONSIVE */
