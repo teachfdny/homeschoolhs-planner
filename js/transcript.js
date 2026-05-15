@@ -1,96 +1,159 @@
 // Transcript generation logic
-
 function generateTranscript() {
     const output = document.getElementById('transcriptOutput');
-    
+
     if (Object.values(currentPlan.courses).every(year => year.length === 0)) {
-        output.innerHTML = '<p style="color: #dc3545; text-align: center;">No courses added yet. Please add courses in the Planner tab.</p>';
+        output.innerHTML = `
+            <div class="empty-transcript">
+                <h3>No Courses Added</h3>
+                <p>Please add courses in the Planner tab first.</p>
+            </div>
+        `;
         return;
     }
 
-    let html = '<div class="transcript">';
-    
-    // Header
-    html += `
-        <div class="transcript-header">
-            <h1>${currentPlan.schoolName}</h1>
-            <p><strong>STUDENT TRANSCRIPT</strong></p>
-            <p>Student Name: ${currentPlan.studentName}</p>
-            <p>Expected Graduation: ${currentPlan.graduationYear}</p>
-            <p>Transcript Generated: ${new Date().toLocaleDateString()}</p>
-        </div>
+    const overallStats = calculateOverallStats();
+
+    let html = `
+        <div class="modern-transcript">
+
+            <div class="transcript-paper">
+
+                <!-- HEADER -->
+                <header class="transcript-header">
+                    <div>
+                        <h1>${currentPlan.schoolName}</h1>
+                        <p class="subtitle">Official High School Transcript</p>
+                    </div>
+
+                    <div class="transcript-date">
+                        <span>Issued:</span>
+                        <strong>${new Date().toLocaleDateString()}</strong>
+                    </div>
+                </header>
+
+                <!-- STUDENT INFO -->
+                <section class="student-info">
+                    <div class="info-card">
+                        <label>Student Name</label>
+                        <span>${currentPlan.studentName}</span>
+                    </div>
+
+                    <div class="info-card">
+                        <label>Graduation Year</label>
+                        <span>${currentPlan.graduationYear}</span>
+                    </div>
+
+                    <div class="info-card">
+                        <label>Cumulative GPA</label>
+                        <span>${overallStats.cumulativeGPA}</span>
+                    </div>
+
+                    <div class="info-card">
+                        <label>Total Credits</label>
+                        <span>${overallStats.totalCredits}</span>
+                    </div>
+                </section>
     `;
 
-    // Courses by year
+    // YEAR SECTIONS
     CONFIG.YEARS.forEach(year => {
         const courses = currentPlan.courses[year.number] || [];
+
         if (courses.length === 0) return;
 
         const yearStats = calculateYearStats(courses);
 
         html += `
-            <div class="transcript-section">
-                <h3>${year.name} (${year.number}th Grade)</h3>
-                <div class="transcript-courses">
-                    <div class="transcript-row transcript-header-row">
-                        <div class="transcript-cell name">Course Name</div>
-                        <div class="transcript-cell credits">Credits</div>
-                        <div class="transcript-cell grade">Grade</div>
-                        <div class="transcript-cell gpa">GPA Pts</div>
+            <section class="year-section">
+                <div class="year-header">
+                    <h2>${year.name}</h2>
+
+                    <div class="year-stats">
+                        <span><strong>Credits:</strong> ${yearStats.credits}</span>
+                        <span><strong>GPA:</strong> ${yearStats.gpa}</span>
                     </div>
+                </div>
+
+                <table class="transcript-table">
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Year</th>
+                            <th>Semester</th>
+                            <th>Type</th>
+                            <th>Credits</th>
+                            <th>Grade</th>
+                            <th>GPA</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
         `;
 
         courses.forEach(course => {
-            const gpaDisplay = course.gpaPoints !== null ? course.gpaPoints.toFixed(1) : 'P';
+            const gpaDisplay =
+                course.gpaPoints !== null
+                    ? course.gpaPoints.toFixed(1)
+                    : 'P';
+
             html += `
-                <div class="transcript-row">
-                    <div class="transcript-cell name">${course.name}</div>
-                    <div class="transcript-cell credits">${course.credits}</div>
-                    <div class="transcript-cell grade">${course.grade}</div>
-                    <div class="transcript-cell gpa">${gpaDisplay}</div>
-                </div>
+                <tr>
+                    <td>${course.name}</td>
+                    <td>${course.schoolYear || '-'}</td>
+                    <td>${course.semester || '-'}</td>
+                    <td>${course.type || 'Regular'}</td>
+                    <td>${course.credits}</td>
+                    <td>
+                        <span class="grade-badge grade-${course.grade}">
+                            ${course.grade}
+                        </span>
+                    </td>
+                    <td>${gpaDisplay}</td>
+                </tr>
             `;
         });
 
         html += `
-                </div>
-                <div class="transcript-summary">
-                    <div class="transcript-summary-item">
-                        Year Credits
-                        <strong>${yearStats.credits}</strong>
-                    </div>
-                    <div class="transcript-summary-item">
-                        Year GPA
-                        <strong>${yearStats.gpa}</strong>
-                    </div>
-                </div>
-            </div>
+                    </tbody>
+                </table>
+            </section>
         `;
     });
 
-    // Overall summary
-    const overallStats = calculateOverallStats();
+    // FINAL SUMMARY
     html += `
-        <div class="transcript-section">
-            <h3>Overall Summary</h3>
-            <div class="transcript-summary">
-                <div class="transcript-summary-item">
-                    Total Credits
-                    <strong>${overallStats.totalCredits}</strong>
+            <section class="overall-summary">
+                <h2>Academic Summary</h2>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <label>Total Courses</label>
+                        <strong>${overallStats.totalCourses}</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <label>Total Credits</label>
+                        <strong>${overallStats.totalCredits}</strong>
+                    </div>
+
+                    <div class="summary-card">
+                        <label>Cumulative GPA</label>
+                        <strong>${overallStats.cumulativeGPA}</strong>
+                    </div>
                 </div>
-                <div class="transcript-summary-item">
-                    Cumulative GPA
-                    <strong>${overallStats.cumulativeGPA}</strong>
-                </div>
-                <div class="transcript-summary-item">
-                    Total Courses
-                    <strong>${overallStats.totalCourses}</strong>
-                </div>
-            </div>
+            </section>
+
+            <footer class="transcript-footer">
+                <p>
+                    This transcript was generated by HomeschoolHS Planner.
+                </p>
+            </footer>
+
         </div>
+    </div>
     `;
 
-    html += '</div>';
     output.innerHTML = html;
 }
 
