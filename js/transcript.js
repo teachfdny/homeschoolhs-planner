@@ -101,7 +101,7 @@ function generateTranscript() {
                 <tr>
                     <td>${course.name}</td>
                     <td>${course.schoolYear || '-'}</td>
-                    <td>${course.semester || '-'}</td>
+                    <td>${course.courseSemester || '-'}</td>
                     <td>${course.type || 'Regular'}</td>
                     <td>${course.credits}</td>
                     <td>
