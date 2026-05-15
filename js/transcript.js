@@ -101,8 +101,8 @@ function generateTranscript() {
                 <tr>
                     <td>${course.name}</td>
                     <td>${course.schoolYear || '-'}</td>
-                    <td>${course.courseSemester || '-'}</td>
-                    <td>${course.courseType || 'Regular'}</td>
+                    <td>${course.semester || '-'}</td>
+                    <td>${course.type || 'Regular'}</td>
                     <td>${course.credits}</td>
                     <td>
                         <span class="grade-badge grade-${course.grade}">
