@@ -1,6 +1,5 @@
 // ============================================================
-//  TRANSCRIPT GENERATOR — drop-in replacement for your existing
-//  generateTranscript(), calculateYearStats(), calculateOverallStats()
+//  TRANSCRIPT GENERATOR — 2-up layout matching reference design
 // ============================================================
 
 function generateTranscript() {
@@ -15,164 +14,138 @@ function generateTranscript() {
         return;
     }
 
-    const overallStats = calculateOverallStats();
-    const today        = new Date();
-    const issuedDate   = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const overallStats  = calculateOverallStats();
+    const today         = new Date();
+    const issuedDate    = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    // ── School address comes from currentPlan; fall back to placeholder ──
-    const schoolAddress = currentPlan.schoolAddress || '&lt;School Address&gt;';
-    const schoolPhone   = currentPlan.schoolPhone   || '&lt;Phone / Email&gt;';
-    const studentDOB    = currentPlan.studentDOB    || '';
-    const studentID     = currentPlan.studentID     || '';
+    const schoolAddress = currentPlan.schoolAddress || '';
+    const schoolPhone   = currentPlan.schoolPhone   || '';
+    const studentDOB    = currentPlan.studentDOB    || '________________';
+    const studentID     = currentPlan.studentID     || '________________';
+
+    // ── Helper: build one year panel (left or right) ──────────
+    function buildYearPanel(yearObj) {
+        const courses = currentPlan.courses[yearObj.number] || [];
+        if (courses.length === 0) return '<div class="pt-year-panel pt-year-empty"></div>';
+
+        const stats = calculateYearStats(courses);
+
+        // Derive school-year label from graduation year + grade offset
+        const gradeOffset = { 1: 3, 2: 2, 3: 1, 4: 0 };
+        const offset      = gradeOffset[yearObj.number] ?? 0;
+        const startYear   = (parseInt(currentPlan.graduationYear) || 2025) - offset;
+        const yearLabel   = `${startYear} \u2013 ${startYear + 1}`;
+
+        let rows = '';
+        courses.forEach(course => {
+            rows += `
+                <tr>
+                    <td class="pt-col-name">${course.name}</td>
+                    <td class="pt-col-credits">${course.credits}</td>
+                    <td class="pt-col-grade">${course.grade}</td>
+                </tr>`;
+        });
+
+        return `
+            <div class="pt-year-panel">
+                <table class="pt-year-table">
+                    <thead>
+                        <tr class="pt-year-header-row">
+                            <th class="pt-yh-name">${yearObj.name}</th>
+                            <th class="pt-yh-year" colspan="2">${yearLabel}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                    <tfoot>
+                        <tr class="pt-year-totals">
+                            <td class="pt-col-name">Year Total &mdash; GPA: ${stats.gpa}</td>
+                            <td class="pt-col-credits">${stats.credits}</td>
+                            <td class="pt-col-grade"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>`;
+    }
+
+    // ── Pair years: [9+10], [11+12] ───────────────────────────
+    const years = CONFIG.YEARS;
+    const pair1 = `
+        <div class="pt-row">
+            ${buildYearPanel(years[0])}
+            ${buildYearPanel(years[1])}
+        </div>`;
+    const pair2 = `
+        <div class="pt-row">
+            ${buildYearPanel(years[2])}
+            ${buildYearPanel(years[3])}
+        </div>`;
 
     let html = `
     <div class="pro-transcript">
 
-        <!-- ══ LETTERHEAD ══════════════════════════════════════ -->
-        <header class="pt-header">
-            <div class="pt-school-block">
-                <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
-                <div class="pt-school-meta">${schoolAddress}</div>
-                <div class="pt-school-meta">${schoolPhone}</div>
+        <!-- LETTERHEAD -->
+        <div class="pt-letterhead">
+            <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
+            <div class="pt-school-meta">${[schoolAddress, schoolPhone].filter(Boolean).join(' &nbsp;&bull;&nbsp; ')}</div>
+        </div>
+
+        <!-- STUDENT META -->
+        <table class="pt-meta-table">
+            <tbody>
+                <tr>
+                    <td class="pt-meta-label">Student</td>
+                    <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
+                    <td class="pt-meta-label">DOB</td>
+                    <td class="pt-meta-value">${studentDOB}</td>
+                    <td class="pt-meta-label">ID</td>
+                    <td class="pt-meta-value">${studentID}</td>
+                    <td class="pt-meta-label">Grad. Year</td>
+                    <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
+                    <td class="pt-meta-label">Cum. GPA</td>
+                    <td class="pt-meta-value pt-meta-gpa">${overallStats.cumulativeGPA}</td>
+                    <td class="pt-meta-label">Credits</td>
+                    <td class="pt-meta-value">${overallStats.totalCredits}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ACADEMIC RECORD TITLE -->
+        <div class="pt-record-title">Academic Record</div>
+
+        <!-- SHARED COLUMN HEADERS -->
+        <div class="pt-col-labels">
+            <div class="pt-col-label-set">
+                <span class="pt-cl-name">Course Title</span>
+                <span class="pt-cl-credits">Credits</span>
+                <span class="pt-cl-grade">Final Grade</span>
             </div>
-            <div class="pt-title-block">
-                <div class="pt-doc-title">OFFICIAL ACADEMIC TRANSCRIPT</div>
-                <div class="pt-doc-subtitle">High School Record</div>
+            <div class="pt-col-label-divider"></div>
+            <div class="pt-col-label-set">
+                <span class="pt-cl-name">Course Title</span>
+                <span class="pt-cl-credits">Credits</span>
+                <span class="pt-cl-grade">Final Grade</span>
             </div>
-        </header>
+        </div>
 
-        <!-- ══ STUDENT INFO ROW ════════════════════════════════ -->
-        <section class="pt-student-row">
-            <table class="pt-info-table">
-                <tbody>
-                    <tr>
-                        <td class="pt-info-label">Student Name</td>
-                        <td class="pt-info-value">${currentPlan.studentName || ''}</td>
-                        <td class="pt-info-label">Graduation Year</td>
-                        <td class="pt-info-value">${currentPlan.graduationYear || ''}</td>
-                        <td class="pt-info-label">Date Issued</td>
-                        <td class="pt-info-value">${issuedDate}</td>
-                    </tr>
-                    <tr>
-                        <td class="pt-info-label">Date of Birth</td>
-                        <td class="pt-info-value">${studentDOB || '________________'}</td>
-                        <td class="pt-info-label">Student ID</td>
-                        <td class="pt-info-value">${studentID || '________________'}</td>
-                        <td class="pt-info-label">Cumulative GPA</td>
-                        <td class="pt-info-value pt-gpa-highlight">${overallStats.cumulativeGPA}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+        <!-- YEAR PAIRS -->
+        ${pair1}
+        ${pair2}
 
-        <!-- ══ YEAR SECTIONS ═══════════════════════════════════ -->
-    `;
+        <!-- GRADING SCALE -->
+        <div class="pt-scale-bar">
+            <strong>Grading Scale:</strong>
+            A&nbsp;=&nbsp;90–100 &nbsp;|&nbsp; B&nbsp;=&nbsp;80–89 &nbsp;|&nbsp; C&nbsp;=&nbsp;70–79 &nbsp;|&nbsp; D&nbsp;=&nbsp;60–69 &nbsp;|&nbsp; F&nbsp;=&nbsp;0–59 &nbsp;|&nbsp; P&nbsp;=&nbsp;Pass (not calculated in GPA)
+            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            <strong>GPA Weights:</strong> Regular&nbsp;4.0 &nbsp;|&nbsp; Honors&nbsp;4.5 &nbsp;|&nbsp; AP/Dual Enrollment&nbsp;5.0
+        </div>
 
-    CONFIG.YEARS.forEach(year => {
-        const courses = currentPlan.courses[year.number] || [];
-        if (courses.length === 0) return;
-
-        const yearStats = calculateYearStats(courses);
-
-        html += `
-        <section class="pt-year-section">
-            <div class="pt-year-header">
-                <span class="pt-year-title">${year.name}</span>
-                <span class="pt-year-stats">Credits: ${yearStats.credits} &nbsp;|&nbsp; GPA: ${yearStats.gpa}</span>
-            </div>
-
-            <table class="pt-course-table">
-                <thead>
-                    <tr>
-                        <th class="col-course">Course Title</th>
-                        <th class="col-type">Level</th>
-                        <th class="col-sem">Sem.</th>
-                        <th class="col-credits">Credits</th>
-                        <th class="col-grade">Grade</th>
-                        <th class="col-gpapts">Grade Points</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        courses.forEach(course => {
-            const gpaDisplay = course.gpaPoints !== null
-                ? course.gpaPoints.toFixed(1)
-                : 'P/F';
-
-            html += `
-                    <tr>
-                        <td class="col-course">${course.name}</td>
-                        <td class="col-type">${course.type || 'Regular'}</td>
-                        <td class="col-sem">${course.semester || '—'}</td>
-                        <td class="col-credits">${course.credits}</td>
-                        <td class="col-grade">${course.grade}</td>
-                        <td class="col-gpapts">${gpaDisplay}</td>
-                    </tr>`;
-        });
-
-        html += `
-                </tbody>
-                <tfoot>
-                    <tr class="pt-year-foot">
-                        <td colspan="3">Year Totals</td>
-                        <td>${yearStats.credits}</td>
-                        <td></td>
-                        <td>GPA: ${yearStats.gpa}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </section>`;
-    });
-
-    // ── GRADING SCALE ───────────────────────────────────────
-    html += `
-        <section class="pt-grading-scale">
-            <div class="pt-scale-title">Grading Scale &amp; GPA Weights</div>
-            <table class="pt-scale-table">
-                <thead>
-                    <tr>
-                        <th>Grade</th><th>Range</th><th>Regular</th><th>Honors</th><th>AP / Dual Enroll</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>A</td><td>90–100</td><td>4.0</td><td>4.5</td><td>5.0</td></tr>
-                    <tr><td>B</td><td>80–89</td><td>3.0</td><td>3.5</td><td>4.0</td></tr>
-                    <tr><td>C</td><td>70–79</td><td>2.0</td><td>2.5</td><td>3.0</td></tr>
-                    <tr><td>D</td><td>60–69</td><td>1.0</td><td>1.5</td><td>2.0</td></tr>
-                    <tr><td>F</td><td>0–59</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-                    <tr><td>P</td><td>Pass</td><td colspan="3">Not included in GPA calculation</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- ══ ACADEMIC SUMMARY ════════════════════════════════ -->
-        <section class="pt-summary">
-            <table class="pt-summary-table">
-                <thead>
-                    <tr>
-                        <th>Total Courses</th>
-                        <th>Total Credits Earned</th>
-                        <th>Cumulative GPA</th>
-                        <th>Expected Graduation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>${overallStats.totalCourses}</td>
-                        <td>${overallStats.totalCredits}</td>
-                        <td><strong>${overallStats.cumulativeGPA}</strong></td>
-                        <td>${currentPlan.graduationYear || '________'}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- ══ SIGNATURE BLOCK ════════════════════════════════ -->
-        <section class="pt-signature-block">
+        <!-- SIGNATURE BLOCK -->
+        <div class="pt-signature-block">
             <div class="pt-sig-col">
                 <div class="pt-sig-line"></div>
-                <div class="pt-sig-label">School Administrator / Parent-Educator Signature</div>
+                <div class="pt-sig-label">Administrator / Parent-Educator Signature</div>
             </div>
             <div class="pt-sig-col">
                 <div class="pt-sig-line"></div>
@@ -182,22 +155,19 @@ function generateTranscript() {
                 <div class="pt-sig-line"></div>
                 <div class="pt-sig-label">Contact Phone / Email</div>
             </div>
-        </section>
+        </div>
 
-        <footer class="pt-footer">
-            <p>This transcript is an official record of ${currentPlan.studentName || 'the student'}'s
-            academic work completed under the supervision of ${currentPlan.schoolName || 'the above institution'}.
-            Issued ${issuedDate}. Unaltered copies may be reproduced for admissions purposes.</p>
-        </footer>
+        <div class="pt-doc-footer">
+            Official transcript of ${currentPlan.studentName || 'student'} &mdash; ${currentPlan.schoolName || ''} &mdash; Issued ${issuedDate}
+        </div>
 
-    </div><!-- /pro-transcript -->
-    `;
+    </div>`;
 
     output.innerHTML = html;
 }
 
 
-// ── Stat helpers (unchanged logic, same API) ──────────────────
+// ── Stat helpers ──────────────────────────────────────────────
 
 function calculateYearStats(courses) {
     let credits = 0, gpaPoints = 0, gradedCredits = 0;
@@ -220,15 +190,15 @@ function calculateOverallStats() {
             totalCourses++;
             totalCredits += course.credits;
             if (course.gpaPoints !== null) {
-                totalGPAPoints      += course.gpaPoints * course.credits;
-                totalGradedCredits  += course.credits;
+                totalGPAPoints     += course.gpaPoints * course.credits;
+                totalGradedCredits += course.credits;
             }
         });
     });
     const cumulativeGPA = totalGradedCredits > 0 ? totalGPAPoints / totalGradedCredits : 0;
     return {
-        totalCredits:   totalCredits.toFixed(1),
-        cumulativeGPA:  formatGPA(cumulativeGPA),
+        totalCredits:  totalCredits.toFixed(1),
+        cumulativeGPA: formatGPA(cumulativeGPA),
         totalCourses
     };
 }
