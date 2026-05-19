@@ -68,7 +68,18 @@ header p {
     font-weight: 300;
     letter-spacing: 0.5px;
 }
-
+.header-badge {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.65em;
+    font-weight: 700;
+    color: #032E4E;
+    background: #F2F6D0;
+    padding: 4px 12px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    align-self: center;
+}
 /* TABS */
 .tabs {
     display: flex;
