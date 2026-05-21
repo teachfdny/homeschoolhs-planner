@@ -1181,3 +1181,7 @@ header p {
     margin-bottom: 16px;
     margin-top: -10px;
 }
+.settings-group .btn {
+    width: auto;
+    padding: 10px 24px;
+}
