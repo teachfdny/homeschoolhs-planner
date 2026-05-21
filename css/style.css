@@ -24,12 +24,12 @@ body {
 
 header {
     background: linear-gradient(135deg, #032E4E 0%, #1B5A7E 100%);
-    color: #ffffff;
-    padding: 50px 20px;
-    text-align: center;
+    color: #F2F6D0;
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 3px solid #D44167;
-    position: relative;
-    overflow: hidden;
 }
 
 header::before {
@@ -73,11 +73,12 @@ header p {
     font-size: 0.65em;
     font-weight: 700;
     color: #032E4E;
-    background: #ffffff;
+    background: #F2F6D0;
     padding: 4px 12px;
     border-radius: 3px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    white-space: nowrap;
     align-self: center;
 }
 /* TABS */
