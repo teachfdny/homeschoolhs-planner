@@ -4,6 +4,12 @@ let currentPlan = {
     studentName: 'Student',
     schoolName: 'HomeschoolHS',
     graduationYear: new Date().getFullYear() + 4,
+    studentDOB: '',
+    studentAddress: '',
+    schoolAddress: '',
+    schoolPhone: '',
+    schoolEmail: '',
+    schoolWebsite: '',
     courses: {
         9: [],
         10: [],
@@ -46,6 +52,30 @@ function setupEventListeners() {
         updateUI();
     });
 
+    document.getElementById('studentDOB').addEventListener('change', function() {
+    currentPlan.studentDOB = this.value;
+});
+
+document.getElementById('studentAddress').addEventListener('change', function() {
+    currentPlan.studentAddress = this.value;
+});
+
+document.getElementById('schoolAddress').addEventListener('change', function() {
+    currentPlan.schoolAddress = this.value;
+});
+
+document.getElementById('schoolPhone').addEventListener('change', function() {
+    currentPlan.schoolPhone = this.value;
+});
+
+document.getElementById('schoolEmail').addEventListener('change', function() {
+    currentPlan.schoolEmail = this.value;
+});
+
+document.getElementById('schoolWebsite').addEventListener('change', function() {
+    currentPlan.schoolWebsite = this.value;
+});
+    
     // Course form submission
     document.getElementById('courseForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -128,6 +158,12 @@ function updateUI() {
     document.getElementById('studentName').value = currentPlan.studentName;
     document.getElementById('schoolName').value = currentPlan.schoolName;
     document.getElementById('graduationYear').value = currentPlan.graduationYear;
+    document.getElementById('studentDOB').value = currentPlan.studentDOB || '';
+    document.getElementById('studentAddress').value = currentPlan.studentAddress || '';
+    document.getElementById('schoolAddress').value = currentPlan.schoolAddress || '';
+    document.getElementById('schoolPhone').value = currentPlan.schoolPhone || '';
+    document.getElementById('schoolEmail').value = currentPlan.schoolEmail || '';
+    document.getElementById('schoolWebsite').value = currentPlan.schoolWebsite || '';
 
     // Update years
     CONFIG.YEARS.forEach(year => {
