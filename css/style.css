@@ -1170,3 +1170,14 @@ header p {
         color-adjust: exact;
     }
 }
+.form-group-full {
+    width: 100%;
+    margin-right: 0;
+}
+
+.section-subtitle {
+    font-size: 0.85em;
+    color: #9a9080;
+    margin-bottom: 16px;
+    margin-top: -10px;
+}
