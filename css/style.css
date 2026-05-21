@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
-    background: linear-gradient(135deg, #F2F6D0 0%, #F0BCD4 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f9f7f4 100%);
     min-height: 100vh;
     padding: 20px;
     color: #032E4E;
@@ -15,16 +15,16 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: #F0BCD4;
+    background: #f9f7f4;
     border-radius: 15px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     overflow: hidden;
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
 }
 
 header {
     background: linear-gradient(135deg, #032E4E 0%, #1B5A7E 100%);
-    color: #F2F6D0;
+    color: #ffffff;
     padding: 50px 20px;
     text-align: center;
     border-bottom: 3px solid #D44167;
@@ -73,7 +73,7 @@ header p {
     font-size: 0.65em;
     font-weight: 700;
     color: #032E4E;
-    background: #F2F6D0;
+    background: #ffffff;
     padding: 4px 12px;
     border-radius: 3px;
     letter-spacing: 0.06em;
@@ -83,7 +83,7 @@ header p {
 /* TABS */
 .tabs {
     display: flex;
-    background: #F2F6D0;
+    background: #ffffff;
     border-bottom: 2px solid #D44167;
     gap: 0;
 }
@@ -111,7 +111,7 @@ header p {
 }
 
 .tab-btn.active {
-    color: #F2F6D0;
+    color: #ffffff;
     background: #032E4E;
     border-bottom-color: #D44167;
 }
@@ -139,11 +139,11 @@ header p {
 
 /* STUDENT SECTION */
 .student-section {
-    background: #F0BCD4;
+    background: #f9f7f4;
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 30px;
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
     box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5), 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
@@ -183,7 +183,7 @@ header p {
     border: 1px solid #D44167;
     border-radius: 8px;
     font-size: 0.95em;
-    background: #F2F6D0;
+    background: #ffffff;
     color: #032E4E;
     font-family: 'Segoe UI', sans-serif;
     transition: all 0.3s ease;
@@ -194,7 +194,7 @@ header p {
     outline: none;
     border-color: #032E4E;
     box-shadow: 0 0 0 3px rgba(3, 46, 78, 0.1);
-    background: #F2F6D0;
+    background: #ffffff;
 }
 
 /* YEARS GRID */
@@ -206,8 +206,8 @@ header p {
 }
 
 .year-card {
-    background: #F0BCD4;
-    border: 2px solid #D44167;
+    background: #f9f7f4;
+    border: 1px solid #e8e2db;
     border-radius: 12px;
     padding: 22px;
     transition: all 0.3s ease;
@@ -234,7 +234,7 @@ header p {
 }
 
 .course-item {
-    background: #F2F6D0;
+    background: #ffffff;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 8px;
@@ -269,7 +269,7 @@ header p {
 
 .course-grade {
     background: #032E4E;
-    color: #F2F6D0;
+    color: #ffffff;
     padding: 4px 10px;
     border-radius: 6px;
     font-weight: bold;
@@ -279,7 +279,7 @@ header p {
 
 .course-delete {
     background: #D44167;
-    color: #F2F6D0;
+    color: #ffffff;
     border: none;
     padding: 5px 10px;
     border-radius: 6px;
@@ -311,7 +311,7 @@ header p {
 .btn-add {
     width: 100%;
     background: #545677;
-    color: #F2F6D0;
+    color: #ffffff;
     margin-top: 10px;
     border: 1px solid #3D3D50;
 }
@@ -323,7 +323,7 @@ header p {
 
 .btn-primary {
     background: #032E4E;
-    color: #F2F6D0;
+    color: #ffffff;
     border: 1px solid #021F32;
 }
 
@@ -334,7 +334,7 @@ header p {
 
 .btn-secondary {
     background: #D44167;
-    color: #F2F6D0;
+    color: #ffffff;
     margin-right: 10px;
     border: 1px solid #C03050;
 }
@@ -346,7 +346,7 @@ header p {
 
 .btn-danger {
     background: #545677;
-    color: #F2F6D0;
+    color: #ffffff;
     border: 1px solid #3D3D50;
 }
 
@@ -365,11 +365,11 @@ header p {
 
 .stat-card {
     background: linear-gradient(135deg, #032E4E 0%, #1B5A7E 100%);
-    color: #F2F6D0;
+    color: #ffffff;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
@@ -426,13 +426,13 @@ header p {
 }
 
 .modal-content {
-    background: #F0BCD4;
+    background: #f9f7f4;
     padding: 35px;
     border-radius: 12px;
     max-width: 500px;
     width: 90%;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
 }
 
 .close {
@@ -472,8 +472,8 @@ header p {
 
 #transcriptOutput {
     margin-top: 20px;
-    background: #F2F6D0;
-    border: 2px solid #D44167;
+    background: #ffffff;
+    border: 1px solid #e8e2db;
     border-radius: 12px;
     padding: 30px;
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
@@ -542,7 +542,7 @@ header p {
 }
 
 .transcript-table thead {
-    background-color: #F0BCD4;
+    background-color: #f9f7f4;
     border-top: 2px solid #032E4E;
     border-bottom: 2px solid #032E4E;
 }
@@ -563,7 +563,7 @@ header p {
 }
 
 .transcript-table tbody tr:nth-child(even) {
-    background-color: #F2F6D0;
+    background-color: #ffffff;
 }
 
 .col-name {
@@ -593,9 +593,9 @@ header p {
 .year-summary {
     display: flex;
     justify-content: space-around;
-    background: #F0BCD4;
+    background: #f9f7f4;
     padding: 12px;
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.9em;
@@ -631,8 +631,8 @@ header p {
 .summary-box {
     text-align: center;
     padding: 15px;
-    background: #F0BCD4;
-    border: 2px solid #D44167;
+    background: #f9f7f4;
+    border: 1px solid #e8e2db;
     border-radius: 8px;
     flex: 1;
     margin: 0 10px;
@@ -653,8 +653,8 @@ header p {
 .grading-scale-section {
     margin-top: 30px;
     padding: 15px;
-    background: #F0BCD4;
-    border: 2px solid #D44167;
+    background: #f9f7f4;
+    border: 1px solid #e8e2db;
     border-radius: 8px;
     page-break-inside: avoid;
 }
@@ -695,9 +695,9 @@ header p {
 .settings-group {
     margin-bottom: 30px;
     padding: 20px;
-    background: #F0BCD4;
+    background: #f9f7f4;
     border-radius: 12px;
-    border: 2px solid #D44167;
+    border: 1px solid #e8e2db;
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
@@ -723,12 +723,12 @@ header p {
 
 .grading-table th {
     background: #032E4E;
-    color: #F2F6D0;
+    color: #ffffff;
     font-weight: 700;
 }
 
 .grading-table tr:nth-child(even) {
-    background: #F2F6D0;
+    background: #ffffff;
 }
 
 /* RESPONSIVE */
