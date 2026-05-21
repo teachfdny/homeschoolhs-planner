@@ -288,3 +288,17 @@ function clearPlan() {
         updateUI();
     }
 }
+// Save school information
+function saveSchoolInfo() {
+    currentPlan.schoolAddress = document.getElementById('schoolAddress').value;
+    currentPlan.schoolPhone = document.getElementById('schoolPhone').value;
+    currentPlan.schoolEmail = document.getElementById('schoolEmail').value;
+    currentPlan.schoolWebsite = document.getElementById('schoolWebsite').value;
+
+    const key = getPlanKey(currentPlan.studentName);
+    localStorage.setItem(key, JSON.stringify(currentPlan));
+
+    const msg = document.getElementById('schoolInfoSaved');
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3000);
+}
