@@ -98,12 +98,12 @@ function generateTranscript() {
     <div class="pro-transcript">
 
         <!-- LETTERHEAD -->
-        <div class="pt-letterhead">
-            <div class="pt-letterhead-left">
-                <div class="pt-logo-box">
-                    <span class="pt-logo-placeholder">LOGO</span>
-                </div>
-            </div>
+        <div class="pt-letterhead-left">
+    ${currentPlan.schoolLogo ? 
+        `<img src="${currentPlan.schoolLogo}" class="pt-logo-img" alt="School Logo">` : 
+        '<div class="pt-logo-box"><span class="pt-logo-placeholder">LOGO</span></div>'
+    }
+</div>
             <div class="pt-letterhead-center">
                 <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
                 <div class="pt-school-meta">${schoolMeta}</div>
