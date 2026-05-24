@@ -1191,3 +1191,37 @@ header p {
     width: auto;
     padding: 10px 24px;
 }
+.pt-letterhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.pt-letterhead-left,
+.pt-letterhead-right {
+    width: 80px;
+}
+
+.pt-letterhead-center {
+    text-align: center;
+    flex: 1;
+}
+
+.pt-logo-box {
+    width: 72px;
+    height: 72px;
+    border: 1px dashed #aaa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pt-logo-placeholder {
+    font-size: 9px;
+    color: #aaa;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
