@@ -1221,3 +1221,9 @@ background: #032E4E;
     letter-spacing: .06em;
     text-transform: uppercase;
 }
+.pt-logo-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 4px;
+}
