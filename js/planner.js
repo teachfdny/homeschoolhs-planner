@@ -75,7 +75,17 @@ document.getElementById('schoolEmail').addEventListener('change', function() {
 document.getElementById('schoolWebsite').addEventListener('change', function() {
     currentPlan.schoolWebsite = this.value;
 });
-    
+    document.getElementById('schoolLogo').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        currentPlan.schoolLogo = e.target.result;
+        document.getElementById('logoPreview').innerHTML = 
+            `<img src="${e.target.result}" style="height:60px;border-radius:4px;">`;
+    };
+    reader.readAsDataURL(file);
+});
     // Course form submission
     document.getElementById('courseForm').addEventListener('submit', function(e) {
         e.preventDefault();
