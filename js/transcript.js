@@ -14,33 +14,45 @@ function generateTranscript() {
         return;
     }
 
-    const overallStats  = calculateOverallStats();
-    const today         = new Date();
-    const issuedDate    = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const overallStats = calculateOverallStats();
+    const today        = new Date();
+    const issuedDate   = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     const schoolAddress = currentPlan.schoolAddress || '';
     const schoolPhone   = currentPlan.schoolPhone   || '';
+    const schoolEmail   = currentPlan.schoolEmail   || '';
+    const schoolWebsite = currentPlan.schoolWebsite || '';
     const studentDOB    = currentPlan.studentDOB    || '________________';
-    const studentID     = currentPlan.studentID     || '________________';
 
-    // ── Helper: build one year panel (left or right) ──────────
+    // Build school meta line — address, phone, email, website
+    const schoolMetaParts = [schoolAddress, schoolPhone, schoolEmail, schoolWebsite].filter(Boolean);
+    const schoolMeta = schoolMetaParts.join(' &nbsp;&bull;&nbsp; ');
+
+    // ── Helper: build one year panel ──────────────────────────
     function buildYearPanel(yearObj) {
         const courses = currentPlan.courses[yearObj.number] || [];
         if (courses.length === 0) return '<div class="pt-year-panel pt-year-empty"></div>';
 
         const stats = calculateYearStats(courses);
 
-        // Derive school-year label from graduation year + grade offset
-        const gradeOffset = { 1: 3, 2: 2, 3: 1, 4: 0 };
+        // Fix: use 9/10/11/12 as keys to match CONFIG.YEARS
+        const gradeOffset = { 9: 3, 10: 2, 11: 1, 12: 0 };
         const offset      = gradeOffset[yearObj.number] ?? 0;
         const startYear   = (parseInt(currentPlan.graduationYear) || 2025) - offset;
         const yearLabel   = `${startYear} \u2013 ${startYear + 1}`;
 
         let rows = '';
         courses.forEach(course => {
+            // Superscript notation for course type
+            const typeTag = course.type === 'Honors'          ? '<sup>H</sup>'
+                          : course.type === 'AP'              ? '<sup>AP</sup>'
+                          : course.type === 'Dual Enrollment' ? '<sup>DE</sup>'
+                          : course.type === 'IB'              ? '<sup>IB</sup>'
+                          : '';
+
             rows += `
                 <tr>
-                    <td class="pt-col-name">${course.name}</td>
+                    <td class="pt-col-name">${course.name}${typeTag}</td>
                     <td class="pt-col-credits">${course.credits}</td>
                     <td class="pt-col-grade">${course.grade}</td>
                 </tr>`;
@@ -87,11 +99,21 @@ function generateTranscript() {
 
         <!-- LETTERHEAD -->
         <div class="pt-letterhead">
-            <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
-            <div class="pt-school-meta">${[schoolAddress, schoolPhone].filter(Boolean).join(' &nbsp;&bull;&nbsp; ')}</div>
+            <div class="pt-letterhead-left">
+                <div class="pt-logo-box">
+                    <span class="pt-logo-placeholder">LOGO</span>
+                </div>
+            </div>
+            <div class="pt-letterhead-center">
+                <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
+                <div class="pt-school-meta">${schoolMeta}</div>
+            </div>
+            <div class="pt-letterhead-right">
+                <!-- mirror of left for balance -->
+            </div>
         </div>
 
-        <!-- STUDENT META -->
+        <!-- STUDENT META — no ID field -->
         <table class="pt-meta-table">
             <tbody>
                 <tr>
@@ -99,8 +121,6 @@ function generateTranscript() {
                     <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
                     <td class="pt-meta-label">DOB</td>
                     <td class="pt-meta-value">${studentDOB}</td>
-                    <td class="pt-meta-label">ID</td>
-                    <td class="pt-meta-value">${studentID}</td>
                     <td class="pt-meta-label">Grad. Year</td>
                     <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
                     <td class="pt-meta-label">Cum. GPA</td>
@@ -139,9 +159,11 @@ function generateTranscript() {
             A&nbsp;=&nbsp;90–100 &nbsp;|&nbsp; B&nbsp;=&nbsp;80–89 &nbsp;|&nbsp; C&nbsp;=&nbsp;70–79 &nbsp;|&nbsp; D&nbsp;=&nbsp;60–69 &nbsp;|&nbsp; F&nbsp;=&nbsp;0–59 &nbsp;|&nbsp; P&nbsp;=&nbsp;Pass (not calculated in GPA)
             &nbsp;&nbsp;&bull;&nbsp;&nbsp;
             <strong>GPA Weights:</strong> Regular&nbsp;4.0 &nbsp;|&nbsp; Honors&nbsp;4.5 &nbsp;|&nbsp; AP/Dual Enrollment&nbsp;5.0
+            &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            <strong>Key:</strong> <sup>H</sup>&nbsp;Honors &nbsp;<sup>AP</sup>&nbsp;AP &nbsp;<sup>DE</sup>&nbsp;Dual Enrollment &nbsp;<sup>IB</sup>&nbsp;IB
         </div>
 
-        <!-- SIGNATURE BLOCK -->
+        <!-- SIGNATURE BLOCK — 2 lines only -->
         <div class="pt-signature-block">
             <div class="pt-sig-col">
                 <div class="pt-sig-line"></div>
@@ -149,16 +171,8 @@ function generateTranscript() {
             </div>
             <div class="pt-sig-col">
                 <div class="pt-sig-line"></div>
-                <div class="pt-sig-label">Title &amp; Date</div>
+                <div class="pt-sig-label">Date</div>
             </div>
-            <div class="pt-sig-col">
-                <div class="pt-sig-line"></div>
-                <div class="pt-sig-label">Contact Phone / Email</div>
-            </div>
-        </div>
-
-        <div class="pt-doc-footer">
-            Official transcript of ${currentPlan.studentName || 'student'} &mdash; ${currentPlan.schoolName || ''} &mdash; Issued ${issuedDate}
         </div>
 
     </div>`;
