@@ -247,7 +247,8 @@ function loadPlan() {
         const key = getPlanKey(students[0]);
         const saved = localStorage.getItem(key);
         if (saved) {
-            currentPlan = JSON.parse(saved);
+            const loaded = JSON.parse(saved);
+            currentPlan = { ...currentPlan, ...loaded };
         }
     }
 }
