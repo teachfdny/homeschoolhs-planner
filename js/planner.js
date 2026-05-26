@@ -235,21 +235,17 @@ function updateSummary() {
 
 // Save plan to localStorage
 function savePlan() {
-    const key = getPlanKey(currentPlan.studentName);
+    const key = getPlanKey();
     localStorage.setItem(key, JSON.stringify(currentPlan));
     alert(`✅ Plan saved for ${currentPlan.studentName}`);
 }
 
 // Load plan from localStorage
 function loadPlan() {
-    const students = getSavedStudents();
-    if (students.length > 0) {
-        const key = getPlanKey(students[0]);
-        const saved = localStorage.getItem(key);
-        if (saved) {
-            const loaded = JSON.parse(saved);
-            currentPlan = { ...currentPlan, ...loaded };
-        }
+    const saved = localStorage.getItem(getPlanKey());
+    if (saved) {
+        const loaded = JSON.parse(saved);
+        currentPlan = { ...currentPlan, ...loaded };
     }
 }
 
@@ -306,7 +302,7 @@ function saveSchoolInfo() {
     currentPlan.schoolEmail = document.getElementById('schoolEmail').value;
     currentPlan.schoolWebsite = document.getElementById('schoolWebsite').value;
 
-    const key = getPlanKey(currentPlan.studentName);
+    const key = getPlanKey();
     localStorage.setItem(key, JSON.stringify(currentPlan));
 
     const msg = document.getElementById('schoolInfoSaved');
