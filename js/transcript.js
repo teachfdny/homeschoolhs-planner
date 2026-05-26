@@ -38,7 +38,7 @@ function generateTranscript() {
         const stats = calculateYearStats(courses);
 
         // Fix: use 9/10/11/12 as keys to match CONFIG.YEARS
-        const gradeOffset = { 9: 3, 10: 2, 11: 1, 12: 0 };
+        const gradeOffset = { 9: 4, 10: 3, 11: 2, 12: 1 };
         const offset      = gradeOffset[yearObj.number] ?? 0;
         const startYear   = (parseInt(currentPlan.graduationYear) || 2025) - offset;
         const yearLabel   = `${startYear} \u2013 ${startYear + 1}`;
