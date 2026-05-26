@@ -109,23 +109,28 @@ function generateTranscript() {
     <div class="pt-school-meta">${schoolMeta}</div>
 </div>
 
-        <!-- STUDENT META — no ID field -->
-        <table class="pt-meta-table">
-            <tbody>
-                <tr>
-                    <td class="pt-meta-label">Student</td>
-                    <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
-                    <td class="pt-meta-label">DOB</td>
-                    <td class="pt-meta-value">${studentDOB}</td>
-                    <td class="pt-meta-label">Grad. Year</td>
-                    <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
-                    <td class="pt-meta-label">Cum. GPA</td>
-                    <td class="pt-meta-value pt-meta-gpa">${overallStats.cumulativeGPA}</td>
-                    <td class="pt-meta-label">Credits</td>
-                    <td class="pt-meta-value">${overallStats.totalCredits}</td>
-                </tr>
-            </tbody>
-        </table>
+       <!-- STUDENT META -->
+<table class="pt-meta-table">
+    <tbody>
+        <tr>
+            <td class="pt-meta-label">Student</td>
+            <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
+            <td class="pt-meta-label">DOB</td>
+            <td class="pt-meta-value">${studentDOB}</td>
+            <td class="pt-meta-label">Grad. Year</td>
+            <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
+            <td class="pt-meta-label">Cum. GPA</td>
+            <td class="pt-meta-value pt-meta-gpa">${overallStats.cumulativeGPA}</td>
+            <td class="pt-meta-label">Credits</td>
+            <td class="pt-meta-value">${overallStats.totalCredits}</td>
+        </tr>
+        ${currentPlan.studentAddress ? `
+        <tr>
+            <td class="pt-meta-label">Address</td>
+            <td colspan="9" class="pt-meta-value">${currentPlan.studentAddress}</td>
+        </tr>` : ''}
+    </tbody>
+</table>
 
         <!-- ACADEMIC RECORD TITLE -->
         <div class="pt-record-title">Academic Record</div>
