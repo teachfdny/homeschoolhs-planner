@@ -22,7 +22,9 @@ function generateTranscript() {
     const schoolPhone   = currentPlan.schoolPhone   || '';
     const schoolEmail   = currentPlan.schoolEmail   || '';
     const schoolWebsite = currentPlan.schoolWebsite || '';
-    const studentDOB    = currentPlan.studentDOB    || '________________';
+    const studentDOB = currentPlan.studentDOB 
+    ? new Date(currentPlan.studentDOB + 'T00:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+    : '________________';
 
     // Build school meta line — address, phone, email, website
     const schoolMetaParts = [schoolAddress, schoolPhone, schoolEmail, schoolWebsite].filter(Boolean);
