@@ -44,16 +44,14 @@ function formatGPA(gpa) {
 }
 
 // Helper function to get current plan key
-function getPlanKey(studentName) {
-    return `${CONFIG.STORAGE_KEY}_${sanitizeKey(studentName)}`;
+function getPlanKey() {
+    return CONFIG.STORAGE_KEY;
 }
 
-// Helper function to sanitize keys
 function sanitizeKey(key) {
     return key.toLowerCase().replace(/[^a-z0-9]/g, '_');
 }
 
-// Helper function to get all saved students
 function getSavedStudents() {
     const students = [];
     for (let key in localStorage) {
