@@ -285,20 +285,23 @@ function closeExamModal() {
 // Update UI with current plan
 function updateUI() {
     // Update student info
-    document.getElementById('studentName').value = currentPlan.studentName;
-    document.getElementById('schoolName').value = currentPlan.schoolName;
+    document.getElementById('studentName').value    = currentPlan.studentName;
+    document.getElementById('schoolName').value     = currentPlan.schoolName;
     document.getElementById('graduationYear').value = currentPlan.graduationYear;
-    document.getElementById('studentDOB').value = currentPlan.studentDOB || '';
+    document.getElementById('studentDOB').value     = currentPlan.studentDOB     || '';
     document.getElementById('studentAddress').value = currentPlan.studentAddress || '';
-    document.getElementById('schoolAddress').value = currentPlan.schoolAddress || '';
-    document.getElementById('schoolPhone').value = currentPlan.schoolPhone || '';
-    document.getElementById('schoolEmail').value = currentPlan.schoolEmail || '';
-    document.getElementById('schoolWebsite').value = currentPlan.schoolWebsite || '';
+    document.getElementById('schoolAddress').value  = currentPlan.schoolAddress  || '';
+    document.getElementById('schoolPhone').value    = currentPlan.schoolPhone    || '';
+    document.getElementById('schoolEmail').value    = currentPlan.schoolEmail    || '';
+    document.getElementById('schoolWebsite').value  = currentPlan.schoolWebsite  || '';
 
     // Update years
     CONFIG.YEARS.forEach(year => {
         renderYear(year.number);
     });
+
+    // Update exams
+    renderExams();
 
     // Update summary
     updateSummary();
@@ -307,22 +310,47 @@ function updateUI() {
 // Render a year's courses
 function renderYear(year) {
     const coursesList = document.getElementById(`year-${year}`);
+    if (!coursesList) return;
     const courses = currentPlan.courses[year] || [];
-    
+
     coursesList.innerHTML = '';
-    
+
     courses.forEach(course => {
         const courseEl = document.createElement('div');
         courseEl.className = 'course-item';
         courseEl.innerHTML = `
             <div class="course-info">
                 <div class="course-name">${course.name}</div>
-                <div class="course-details">${course.type} • ${course.credits} credits</div>
+                <div class="course-details">${course.type} &bull; ${course.credits} credits</div>
             </div>
             <span class="course-grade">${course.grade}</span>
+            <button class="course-edit" onclick="editCourse(${year}, ${course.id})">Edit</button>
             <button class="course-delete" onclick="deleteCourse(${year}, ${course.id})">Delete</button>
         `;
         coursesList.appendChild(courseEl);
+    });
+}
+
+// Render exam scores
+function renderExams() {
+    const examsList = document.getElementById('exams-list');
+    if (!examsList) return;
+    const exams = currentPlan.exams || [];
+
+    examsList.innerHTML = '';
+
+    exams.forEach(exam => {
+        const examEl = document.createElement('div');
+        examEl.className = 'course-item';
+        examEl.innerHTML = `
+            <div class="course-info">
+                <div class="course-name">${exam.name}</div>
+                <div class="course-details">${exam.date || 'No date'}</div>
+            </div>
+            <span class="course-grade">${exam.score}</span>
+            <button class="course-delete" onclick="deleteExam(${exam.id})">Delete</button>
+        `;
+        examsList.appendChild(examEl);
     });
 }
 
