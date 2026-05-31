@@ -143,10 +143,10 @@ function closeModal() {
 
 // Submit course
 function submitCourse() {
-    const courseName = document.getElementById('courseName').value.trim();
+    const courseName    = document.getElementById('courseName').value.trim();
     const courseCredits = parseFloat(document.getElementById('courseCredits').value);
-    const courseGrade = document.getElementById('courseGrade').value;
-    const courseType = document.getElementById('courseType').value;
+    const courseGrade   = document.getElementById('courseGrade').value;
+    const courseType    = document.getElementById('courseType').value;
 
     if (!courseName || !courseGrade) {
         alert('Please fill in all fields');
@@ -154,12 +154,12 @@ function submitCourse() {
     }
 
     const course = {
-        id: Date.now(),
-        name: courseName,
-        credits: courseCredits,
-        grade: courseGrade,
-        type: courseType,
-        gpaPoints: getGPAPoints(courseGrade)
+        id:        Date.now(),
+        name:      courseName,
+        credits:   courseCredits,
+        grade:     courseGrade,
+        type:      courseType,
+        gpaPoints: getGPAPoints(courseGrade, courseType)
     };
 
     currentPlan.courses[courseBeingAdded].push(course);
@@ -167,10 +167,123 @@ function submitCourse() {
     updateUI();
 }
 
-// Delete course
+// Delete course with undo
+let lastDeletedCourse = null;
+
 function deleteCourse(year, courseId) {
+    const course = currentPlan.courses[year].find(c => c.id === courseId);
+    if (!course) return;
+
+    lastDeletedCourse = { year, course };
     currentPlan.courses[year] = currentPlan.courses[year].filter(c => c.id !== courseId);
     updateUI();
+
+    // show undo banner
+    const banner = document.getElementById('undoBanner');
+    banner.style.display = 'flex';
+    clearTimeout(window.undoTimer);
+    window.undoTimer = setTimeout(() => {
+        banner.style.display = 'none';
+        lastDeletedCourse = null;
+    }, 6000);
+}
+
+function undoDelete() {
+    if (!lastDeletedCourse) return;
+    currentPlan.courses[lastDeletedCourse.year].push(lastDeletedCourse.course);
+    lastDeletedCourse = null;
+    document.getElementById('undoBanner').style.display = 'none';
+    clearTimeout(window.undoTimer);
+    updateUI();
+}
+
+// Edit course
+function editCourse(year, courseId) {
+    const course = currentPlan.courses[year].find(c => c.id === courseId);
+    if (!course) return;
+
+    courseBeingAdded = year;
+    document.getElementById('courseName').value    = course.name;
+    document.getElementById('courseCredits').value = course.credits;
+    document.getElementById('courseGrade').value   = course.grade;
+    document.getElementById('courseType').value    = course.type;
+
+    // mark as edit so submitCourse knows to update instead of add
+    document.getElementById('courseForm').dataset.editId = courseId;
+    document.getElementById('courseModal').classList.add('show');
+}
+
+// Update submitCourse to handle edits
+// Replace the push line at the end of submitCourse with this full version:
+// (already handled above — but update the modal title too)
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('courseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const editId = this.dataset.editId;
+        if (editId) {
+            // editing existing course
+            const year = courseBeingAdded;
+            const idx  = currentPlan.courses[year].findIndex(c => c.id === parseInt(editId));
+            if (idx > -1) {
+                currentPlan.courses[year][idx] = {
+                    id:        parseInt(editId),
+                    name:      document.getElementById('courseName').value.trim(),
+                    credits:   parseFloat(document.getElementById('courseCredits').value),
+                    grade:     document.getElementById('courseGrade').value,
+                    type:      document.getElementById('courseType').value,
+                    gpaPoints: getGPAPoints(
+                        document.getElementById('courseGrade').value,
+                        document.getElementById('courseType').value
+                    )
+                };
+            }
+            delete this.dataset.editId;
+            closeModal();
+            updateUI();
+        } else {
+            submitCourse();
+        }
+    });
+});
+
+// Submit exam
+function submitExam() {
+    const examName  = document.getElementById('examName').value.trim();
+    const examDate  = document.getElementById('examDate').value.trim();
+    const examScore = document.getElementById('examScore').value.trim();
+
+    if (!examName || !examScore) {
+        alert('Please enter at least the exam name and score');
+        return;
+    }
+
+    const exam = {
+        id:    Date.now(),
+        name:  examName,
+        date:  examDate,
+        score: examScore
+    };
+
+    currentPlan.exams.push(exam);
+    closeExamModal();
+    updateUI();
+}
+
+// Delete exam
+function deleteExam(examId) {
+    currentPlan.exams = currentPlan.exams.filter(e => e.id !== examId);
+    updateUI();
+}
+
+// Open/close exam modal
+function addExam() {
+    document.getElementById('examForm').reset();
+    delete document.getElementById('examForm').dataset.editId;
+    document.getElementById('examModal').classList.add('show');
+}
+
+function closeExamModal() {
+    document.getElementById('examModal').classList.remove('show');
 }
 
 // Update UI with current plan
