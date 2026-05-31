@@ -1194,3 +1194,19 @@ background: #032E4E;
     display: block;
     margin: 0 auto 8px auto;
 }
+.course-edit {
+    background: #032E4E;
+    color: #F2F6D0;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: 4px;
+}
+
+.course-edit:hover {
+    background: #1B5A7E;
+}
