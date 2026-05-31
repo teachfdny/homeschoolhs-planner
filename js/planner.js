@@ -91,11 +91,7 @@ function setupEventListeners() {
         reader.readAsDataURL(file);
     });
 
-    // Course form submission
-    document.getElementById('courseForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        submitCourse();
-    });
+   
 
     // Exam form submission
     document.getElementById('examForm').addEventListener('submit', function(e) {
