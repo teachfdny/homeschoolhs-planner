@@ -5,7 +5,11 @@
 function generateTranscript() {
     const output = document.getElementById('transcriptOutput');
 
-    if (Object.values(currentPlan.courses).every(year => year.length === 0)) {
+    const hasCoursesOrExams =
+        Object.values(currentPlan.courses).some(year => year.length > 0) ||
+        (currentPlan.exams && currentPlan.exams.length > 0);
+
+    if (!hasCoursesOrExams) {
         output.innerHTML = `
             <div class="empty-transcript">
                 <h3>No Courses Added</h3>
@@ -14,44 +18,47 @@ function generateTranscript() {
         return;
     }
 
-    const overallStats = calculateOverallStats();
-    const today        = new Date();
-    const issuedDate   = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const overallStats  = calculateOverallStats();
+    const today         = new Date();
+    const issuedDate    = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     const schoolAddress = currentPlan.schoolAddress || '';
     const schoolPhone   = currentPlan.schoolPhone   || '';
     const schoolEmail   = currentPlan.schoolEmail   || '';
     const schoolWebsite = currentPlan.schoolWebsite || '';
-    const studentDOB = currentPlan.studentDOB 
-    ? new Date(currentPlan.studentDOB + 'T00:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
-    : '________________';
 
-    // Build school meta line — address, phone, email, website
+    const studentDOB = currentPlan.studentDOB
+        ? new Date(currentPlan.studentDOB + 'T00:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+        : '________________';
+
+    // school meta line
     const schoolMetaParts = [schoolAddress, schoolPhone, schoolEmail, schoolWebsite].filter(Boolean);
     const schoolMeta = schoolMetaParts.join(' &nbsp;&bull;&nbsp; ');
 
-    // ── Helper: build one year panel ──────────────────────────
+    // certification year range
+    const gradYear  = parseInt(currentPlan.graduationYear) || new Date().getFullYear();
+    const startYear = gradYear - 4;
+    const certLine  = `I self-certify and affirm that this is the official transcript and record of ${currentPlan.studentName || 'the student'}'s academic studies from ${startYear} \u2013 ${gradYear}.`;
+
+    // ── Helper: build one course year panel ───────────────────
     function buildYearPanel(yearObj) {
         const courses = currentPlan.courses[yearObj.number] || [];
         if (courses.length === 0) return '<div class="pt-year-panel pt-year-empty"></div>';
 
         const stats = calculateYearStats(courses);
 
-        // Fix: use 9/10/11/12 as keys to match CONFIG.YEARS
-        const gradeOffset = { 9: 4, 10: 3, 11: 2, 12: 1 };
+        const gradeOffset = { 8: 5, 9: 4, 10: 3, 11: 2, 12: 1 };
         const offset      = gradeOffset[yearObj.number] ?? 0;
-        const startYear   = (parseInt(currentPlan.graduationYear) || 2025) - offset;
-        const yearLabel   = `${startYear} \u2013 ${startYear + 1}`;
+        const sy          = gradYear - offset;
+        const yearLabel   = `${sy} \u2013 ${sy + 1}`;
 
         let rows = '';
         courses.forEach(course => {
-            // Superscript notation for course type
             const typeTag = course.type === 'Honors'          ? '<sup>H</sup>'
                           : course.type === 'AP'              ? '<sup>AP</sup>'
                           : course.type === 'Dual Enrollment' ? '<sup>DE</sup>'
                           : course.type === 'IB'              ? '<sup>IB</sup>'
                           : '';
-
             rows += `
                 <tr>
                     <td class="pt-col-name">${course.name}${typeTag}</td>
@@ -65,13 +72,11 @@ function generateTranscript() {
                 <table class="pt-year-table">
                     <thead>
                         <tr class="pt-year-header-row">
-                            <th class="pt-yh-name">${yearObj.name}</th>
+                            <th class="pt-yh-name">${yearObj.label || yearObj.name}</th>
                             <th class="pt-yh-year" colspan="2">${yearLabel}</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
+                    <tbody>${rows}</tbody>
                     <tfoot>
                         <tr class="pt-year-totals">
                             <td class="pt-col-name">Year Total &mdash; GPA: ${stats.gpa}</td>
@@ -83,57 +88,97 @@ function generateTranscript() {
             </div>`;
     }
 
-    // ── Pair years: [9+10], [11+12] ───────────────────────────
+    // ── Helper: build exam scores panel ───────────────────────
+    function buildExamPanel() {
+        const exams = currentPlan.exams || [];
+        if (exams.length === 0) return '<div class="pt-year-panel pt-year-empty"></div>';
+
+        let rows = '';
+        exams.forEach(exam => {
+            rows += `
+                <tr>
+                    <td class="pt-col-name">${exam.name}</td>
+                    <td class="pt-col-credits">${exam.date || ''}</td>
+                    <td class="pt-col-grade">${exam.score}</td>
+                </tr>`;
+        });
+
+        return `
+            <div class="pt-year-panel">
+                <table class="pt-year-table">
+                    <thead>
+                        <tr class="pt-year-header-row">
+                            <th class="pt-yh-name">Exam Scores</th>
+                            <th class="pt-yh-year" colspan="2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+    }
+
+    // ── Year pairs ────────────────────────────────────────────
+    // years[0]=8th, years[1]=9th, years[2]=10th, years[3]=11th, years[4]=12th
     const years = CONFIG.YEARS;
+
     const pair1 = `
         <div class="pt-row">
-            ${buildYearPanel(years[0])}
             ${buildYearPanel(years[1])}
+            ${buildYearPanel(years[2])}
         </div>`;
+
     const pair2 = `
         <div class="pt-row">
-            ${buildYearPanel(years[2])}
             ${buildYearPanel(years[3])}
+            ${buildYearPanel(years[4])}
         </div>`;
+
+    // Row 3 — 8th grade + exam scores (only if either has data)
+    const has8th   = (currentPlan.courses[8]  || []).length > 0;
+    const hasExams = (currentPlan.exams        || []).length > 0;
+    const pair3    = (has8th || hasExams) ? `
+        <div class="pt-row">
+            ${buildYearPanel(years[0])}
+            ${buildExamPanel()}
+        </div>` : '';
 
     let html = `
     <div class="pro-transcript">
 
         <!-- LETTERHEAD -->
-<div class="pt-letterhead">
-    ${currentPlan.schoolLogo ? 
-        `<img src="${currentPlan.schoolLogo}" class="pt-logo-img" alt="School Logo">` : 
-        ''
-    }
-    <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
-    <div class="pt-school-meta">${schoolMeta}</div>
-</div>
+        <div class="pt-letterhead">
+            ${currentPlan.schoolLogo ?
+                `<img src="${currentPlan.schoolLogo}" class="pt-logo-img" alt="School Logo">` :
+                ''}
+            <div class="pt-school-name">${currentPlan.schoolName || 'School Name'}</div>
+            <div class="pt-school-meta">${schoolMeta}</div>
+        </div>
 
-       <!-- STUDENT META -->
-<table class="pt-meta-table">
-    <tbody>
-        <tr>
-            <td class="pt-meta-label">Student</td>
-            <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
-            <td class="pt-meta-label">DOB</td>
-            <td class="pt-meta-value">${studentDOB}</td>
-            <td class="pt-meta-label">Grad. Year</td>
-            <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
-            <td class="pt-meta-label">Cum. GPA</td>
-            <td class="pt-meta-value pt-meta-gpa">${overallStats.cumulativeGPA}</td>
-            <td class="pt-meta-label">Credits</td>
-            <td class="pt-meta-value">${overallStats.totalCredits}</td>
-        </tr>
-        ${currentPlan.studentAddress ? `
-        <tr>
-            <td class="pt-meta-label">Address</td>
-            <td colspan="9" class="pt-meta-value">${currentPlan.studentAddress}</td>
-        </tr>` : ''}
-    </tbody>
-</table>
+        <!-- STUDENT META -->
+        <table class="pt-meta-table">
+            <tbody>
+                <tr>
+                    <td class="pt-meta-label">Student</td>
+                    <td class="pt-meta-value">${currentPlan.studentName || ''}</td>
+                    <td class="pt-meta-label">DOB</td>
+                    <td class="pt-meta-value">${studentDOB}</td>
+                    <td class="pt-meta-label">Grad. Year</td>
+                    <td class="pt-meta-value">${currentPlan.graduationYear || ''}</td>
+                    <td class="pt-meta-label">Cum. GPA</td>
+                    <td class="pt-meta-value pt-meta-gpa">${overallStats.cumulativeGPA}</td>
+                    <td class="pt-meta-label">Credits</td>
+                    <td class="pt-meta-value">${overallStats.totalCredits}</td>
+                </tr>
+                ${currentPlan.studentAddress ? `
+                <tr>
+                    <td class="pt-meta-label">Address</td>
+                    <td colspan="9" class="pt-meta-value">${currentPlan.studentAddress}</td>
+                </tr>` : ''}
+            </tbody>
+        </table>
 
-        <!-- ACADEMIC RECORD TITLE -->
-        <div class="pt-record-title">Academic Record</div>
+        <!-- TITLE -->
+        <div class="pt-record-title">Official Academic Record</div>
 
         <!-- SHARED COLUMN HEADERS -->
         <div class="pt-col-labels">
@@ -153,18 +198,22 @@ function generateTranscript() {
         <!-- YEAR PAIRS -->
         ${pair1}
         ${pair2}
+        ${pair3}
 
         <!-- GRADING SCALE -->
         <div class="pt-scale-bar">
             <strong>Grading Scale:</strong>
             A&nbsp;=&nbsp;90–100 &nbsp;|&nbsp; B&nbsp;=&nbsp;80–89 &nbsp;|&nbsp; C&nbsp;=&nbsp;70–79 &nbsp;|&nbsp; D&nbsp;=&nbsp;60–69 &nbsp;|&nbsp; F&nbsp;=&nbsp;0–59 &nbsp;|&nbsp; P&nbsp;=&nbsp;Pass (not calculated in GPA)
             &nbsp;&nbsp;&bull;&nbsp;&nbsp;
-            <strong>GPA Weights:</strong> Regular&nbsp;4.0 &nbsp;|&nbsp; Honors&nbsp;4.5 &nbsp;|&nbsp; AP/Dual Enrollment&nbsp;5.0
+            <strong>GPA Weights:</strong> Regular&nbsp;4.0 &nbsp;|&nbsp; Honors&nbsp;4.5 &nbsp;|&nbsp; AP/IB/Dual Enrollment&nbsp;5.0
             &nbsp;&nbsp;&bull;&nbsp;&nbsp;
             <strong>Key:</strong> <sup>H</sup>&nbsp;Honors &nbsp;<sup>AP</sup>&nbsp;AP &nbsp;<sup>DE</sup>&nbsp;Dual Enrollment &nbsp;<sup>IB</sup>&nbsp;IB
         </div>
 
-        <!-- SIGNATURE BLOCK — 2 lines only -->
+        <!-- CERTIFICATION -->
+        <div class="pt-cert">${certLine}</div>
+
+        <!-- SIGNATURE BLOCK -->
         <div class="pt-signature-block">
             <div class="pt-sig-col">
                 <div class="pt-sig-line"></div>
