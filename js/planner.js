@@ -25,10 +25,22 @@ let courseBeingAdded = null;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    populateGraduationYears();
     setupEventListeners();
     loadPlan();
     updateUI();
 });
+
+// Populate graduation year dropdown
+function populateGraduationYears() {
+    const select = document.getElementById('graduationYear');
+    for (let year = CONFIG.GRAD_YEAR_MAX; year >= CONFIG.GRAD_YEAR_MIN; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        select.appendChild(option);
+    }
+}
 
 // Setup event listeners
 function setupEventListeners() {
