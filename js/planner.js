@@ -406,9 +406,18 @@ function loadPlan() {
     if (saved) {
         const loaded = JSON.parse(saved);
         currentPlan = { ...currentPlan, ...loaded };
+        // ensure all year keys exist in case plan was saved before 8th grade was added
+        CONFIG.YEARS.forEach(year => {
+            if (!currentPlan.courses[year.number]) {
+                currentPlan.courses[year.number] = [];
+            }
+        });
+        // ensure exams array exists
+        if (!currentPlan.exams) {
+            currentPlan.exams = [];
+        }
     }
 }
-
 // Export plan as JSON
 function exportPlan() {
     const dataStr = JSON.stringify(currentPlan, null, 2);
