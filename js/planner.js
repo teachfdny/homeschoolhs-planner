@@ -10,12 +10,15 @@ let currentPlan = {
     schoolPhone: '',
     schoolEmail: '',
     schoolWebsite: '',
+    schoolLogo: '',
     courses: {
-        9: [],
+        8:  [],
+        9:  [],
         10: [],
         11: [],
         12: []
-    }
+    },
+    exams: []
 };
 
 let courseBeingAdded = null;
