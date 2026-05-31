@@ -1210,3 +1210,10 @@ background: #032E4E;
 .course-edit:hover {
     background: #1B5A7E;
 }
+.optional-label {
+    font-size: 0.75em;
+    font-weight: 400;
+    color: #9a9080;
+    letter-spacing: 0;
+    text-transform: none;
+}
