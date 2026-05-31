@@ -1217,3 +1217,11 @@ background: #032E4E;
     letter-spacing: 0;
     text-transform: none;
 }
+.pt-cert {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 14px;
+    margin-top: 6px;
+}
