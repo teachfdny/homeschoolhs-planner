@@ -255,6 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Submit exam
+
 function submitExam() {
     const examName  = document.getElementById('examName').value.trim();
     const examDate  = document.getElementById('examDate').value.trim();
@@ -265,14 +266,28 @@ function submitExam() {
         return;
     }
 
-    const exam = {
-        id:    Date.now(),
-        name:  examName,
-        date:  examDate,
-        score: examScore
-    };
+    const editId = document.getElementById('examForm').dataset.editId;
 
-    currentPlan.exams.push(exam);
+    if (editId) {
+        const idx = currentPlan.exams.findIndex(e => e.id === parseInt(editId));
+        if (idx > -1) {
+            currentPlan.exams[idx] = {
+                id:    parseInt(editId),
+                name:  examName,
+                date:  examDate,
+                score: examScore
+            };
+        }
+        delete document.getElementById('examForm').dataset.editId;
+    } else {
+        currentPlan.exams.push({
+            id:    Date.now(),
+            name:  examName,
+            date:  examDate,
+            score: examScore
+        });
+    }
+
     closeExamModal();
     updateUI();
 }
@@ -281,6 +296,19 @@ function submitExam() {
 function deleteExam(examId) {
     currentPlan.exams = currentPlan.exams.filter(e => e.id !== examId);
     updateUI();
+}
+
+// Edit exam
+function editExam(examId) {
+    const exam = currentPlan.exams.find(e => e.id === examId);
+    if (!exam) return;
+
+    document.getElementById('examName').value  = exam.name;
+    document.getElementById('examDate').value  = exam.date  || '';
+    document.getElementById('examScore').value = exam.score || '';
+
+    document.getElementById('examForm').dataset.editId = examId;
+    document.getElementById('examModal').classList.add('show');
 }
 
 // Open/close exam modal
@@ -292,6 +320,7 @@ function addExam() {
 
 function closeExamModal() {
     document.getElementById('examModal').classList.remove('show');
+    delete document.getElementById('examForm').dataset.editId;
 }
 
 // Update UI with current plan
@@ -360,6 +389,7 @@ function renderExams() {
                 <div class="course-details">${exam.date || 'No date'}</div>
             </div>
             <span class="course-grade">${exam.score}</span>
+          <button class="course-edit" onclick="editExam(${exam.id})">Edit</button>
             <button class="course-delete" onclick="deleteExam(${exam.id})">Delete</button>
         `;
         examsList.appendChild(examEl);
