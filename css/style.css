@@ -1290,3 +1290,13 @@ background: #032E4E;
         display: none;
     }
 }
+@media (max-width: 768px) {
+    .transcript-container .btn {
+        display: none;
+    }
+}
+@media (max-width: 768px) {
+    #transcriptOutput {
+        display: none;
+    }
+}
