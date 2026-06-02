@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     loadPlan();
     updateUI();
+    checkBackupWarning();
 });
 
 // Populate graduation year dropdown
