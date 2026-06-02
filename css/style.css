@@ -1282,7 +1282,7 @@ background: #032E4E;
     margin: 20px 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .mobile-transcript-warning {
         display: block;
     }
@@ -1290,12 +1290,12 @@ background: #032E4E;
         display: none;
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .transcript-container .btn {
         display: none;
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     #transcriptOutput {
         display: none;
     }
