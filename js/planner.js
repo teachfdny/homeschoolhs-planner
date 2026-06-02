@@ -508,3 +508,13 @@ function saveSchoolInfo() {
     msg.style.display = 'inline';
     setTimeout(() => msg.style.display = 'none', 3000);
 }
+function dismissBackupWarning() {
+    document.getElementById('backupWarning').style.display = 'none';
+    localStorage.setItem('backupWarningDismissed', 'true');
+}
+
+function checkBackupWarning() {
+    if (localStorage.getItem('backupWarningDismissed') === 'true') {
+        document.getElementById('backupWarning').style.display = 'none';
+    }
+}
